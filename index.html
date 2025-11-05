@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,18 +11,32 @@
     <h1>Visualisasi Array dengan Canvas</h1>
 
     <div class="controls">
-        <input type="text" id="arrayInput" placeholder="Contoh: 5,10,15">
+        <input type="number" id="arrayInput" placeholder="Masukkan nilai N" min="0">
         <button onclick="createArray()">Buat Array</button>
 
         <input type="number" id="insertValue" placeholder="Nilai">
-        <input type="number" id="insertIndex" placeholder="Index">
+        <input type="number" id="insertIndex" placeholder="Index" min="0">
         <button onclick="insertValue()">Insert</button>
 
-        <input type="number" id="deleteIndex" placeholder="Index hapus">
+        <input type="number" id="deleteIndex" placeholder="Index hapus" min="0">
         <button onclick="deleteValue()">Delete</button>
-    </div>
 
-    <canvas id="arrayCanvas" width="800" height="200"></canvas>
+        <input type="number" id="SearchIndex" placeholder="Cari Nilai">
+        <button onclick="searchValue()">Search</button>
+
+        <button onclick="minValue()" id="minButton" >Min</button>
+        <button onclick="maxValue()" id="maxButton">Max</button>
+    </div>
+    
+    <canvas id="arrayCanvas" width="1400" height="200">
+
+        
+    </canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+
+
+    
 
     <script src="script.js"></script>
 

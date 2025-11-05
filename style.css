@@ -44,3 +44,29 @@ canvas {
     border: 2px solid #4a90e2;
     border-radius: 10px;
 }
+
+#minButton {
+    background-color: #27cd51;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#minButton:hover {
+    background-color: #178432;
+}
+
+#maxButton {
+    background-color: #cd2727;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#maxButton:hover {
+    background-color: #9e1d1d;
+}
+
+#colors .docs-demo-template { opacity: 0 }

@@ -1,37 +1,35 @@
 const canvas = document.getElementById("arrayCanvas");
 const ctx = canvas.getContext("2d");
 
-
-
 items = [];
 value = {};
+
 function drawArray() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const boxWidth = 50;
-    const boxHeight = 30;
-    let x = 13;
+  const boxWidth = 50;
+  const boxHeight = 30;
+  let x = 13;
 
-    items.forEach((value, index) => {
+  items.forEach((value, index) => {
 
-        // kotak
-        ctx.fillStyle = "blue";
-        ctx.fillRect(x, 50, boxWidth, boxHeight);
-        ctx.fillStyle = "white";
+      // kotak
+      ctx.fillStyle = "blue";
+      ctx.fillRect(x, 50, boxWidth, boxHeight);
+      ctx.fillStyle = "white";
 
-        // nilai
-        ctx.font = "17px Arial";
-        ctx.fillText(value, x + 12, 70);
-        
+      // nilai
+      ctx.font = "17px Arial";
+      ctx.fillText(value, x + 12, 70);
 
-        // index
-        ctx.fillStyle = "black";
-        ctx.font = "12px Arial";
-        ctx.fillText(index, x + 20, 100);
+      // index
+      ctx.fillStyle = "black";
+      ctx.font = "12px Arial";
+      ctx.fillText(index, x + 20, 100);
 
-
-        x += boxWidth + 10;
-    });
+      x += boxWidth + 2;
+    }
+  );
 } 
 
 function createArray() {
@@ -97,7 +95,8 @@ function minValue() {
       }
     }
     alert("Nilai minimum adalah: " + min);
-  }}
+  }
+}
   
 function maxValue() {
   if (items.length === 0) {
@@ -112,5 +111,5 @@ function maxValue() {
       }
     }
     alert("Nilai minimum adalah: " + max);
-  }}
-
+  }
+}

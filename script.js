@@ -14,7 +14,7 @@ function drawBox(value, index, x, y, alpha = 1) { // fungsi untuk menggambar kot
   ctx.globalAlpha = alpha;
 
   // kotak
-  ctx.fillStyle = "blue";
+  ctx.fillStyle = "#1a82e4ff";
   ctx.fillRect(x, y, boxWidth, boxHeight);
 
   // nilai

@@ -40,38 +40,84 @@ function animateArrayCreation() {
   drawNextBox();
 }
 
-function animateInsert(index, value) {
+function animateInsert(value) {
   const boxWidth = 50;
   const boxHeight = 30;
   const startX = 13;
   const targetY = 50;
-  let pos = { x: startX + index * (boxWidth + 2), y: -40 }; // mulai dari atas
+  let pos = { x: startX + value * (boxWidth + 2), y: -40 }; // mulai dari atas
   const target = { x: pos.x, y: targetY };
-  const step = { x: 0, y: 1 };
+  const step = { x: 0, y: 5 };
 
   function drawAllExceptMoving() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < items.length; i++) {
-      if (i === index) continue; // skip kotak yang sedang dianimasikan
+      if (i === value) continue; // skip kotak yang sedang dianimasikan
       drawBox(items[i], i, startX + i * (boxWidth + 2), targetY);
     }
   }
 
-  function animateDropInsert() {
+  function animateDrop() {
     drawAllExceptMoving();
 
-    if (pos.y < target.y) {
+    if (pos.y <= target.y) {
       pos = translasi(pos, step);
-      drawBox2(value, index, pos.x, pos.y);
+      drawBox(value, value, pos.x, pos.y);
       requestAnimationFrame(animateDrop);
     } else {
-      drawBox(value, index, target.x, target.y);
+      drawBox(value, value, target.x, target.y);
       animating = false; // animasi selesai
     }
   }
 
-  animateDropInsert();
+  animateDrop();
 }
+
+function insertSort() {
+  const boxWidth = 50;
+  const startX = 13;
+  const targetY = 50;
+  let i = 0;
+  let j = items.length - 1;
+
+  function drawAll(highlightI = items.length - 1, highlightJ = items.length -1 ) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let k = 0; k < items.length; k++) {
+      if (k === highlightI || k === highlightJ) {
+        drawBox2(items[k], k, startX + k * (boxWidth + 2), targetY); // merah untuk dibandingkan
+      } else {
+        drawBox(items[k], k, startX + k * (boxWidth + 2), targetY); // biru biasa
+      }
+    }
+  }
+
+  function bubbleSortStep() {
+    if (i < items.length - 1) {
+      if (j > i) {
+        drawAll(j, j - 1); // highlight dua elemen yang dibandingkan
+
+        if (items[j] < items[j - 1]) { // jika lebih besar maka :
+          // Tukar elemen
+          [items[j], items[j - 1]] = [items[j - 1], items[j]];
+        }
+
+        j--;
+        setTimeout(bubbleSortStep, 400); // delay tiap langkah
+      } else {
+        j = items.length - 1;
+        i++;
+        setTimeout(bubbleSortStep, 400);
+      }
+    } else {
+      // Selesai sorting
+      drawArray();
+      animating = false;
+    }
+  }
+
+  bubbleSortStep();
+}
+
 
 function animateDelete(index) {
   const boxWidth = 50;
@@ -90,10 +136,13 @@ function animateDelete(index) {
       }
     }
 
-    alpha -= 0.05; // mengurangi opacitynya
+    alpha -= 0.1; // mengurangi opacitynya
 
     if (alpha > 0) {
-      requestAnimationFrame(fadeOut);
+      setTimeout(() =>{
+        requestAnimationFrame(fadeOut);
+      }, 50);
+      
     } else {
       items.splice(index, 1); // jika animasi fade out sudah selesai, hapus boxnya dan shift box sisanya ke kiri
       animateShiftLeft(index);

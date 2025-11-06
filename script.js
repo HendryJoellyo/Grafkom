@@ -88,20 +88,23 @@ function createArray() {
 function insertValue() {
   if (animating) return; // cegah animasi bertumpuk
 
-  const val = document.getElementById("insertValue").value;
-  const idx = parseInt(document.getElementById("insertIndex").value);
-
-  if (idx > items.length) {
-    alert("Index melebihi panjang array");
-    return;
-  }
-  // sisipkan nilai ke array
-  items.splice(idx, 0, parseInt(val));
-
-  animating = true;
-  animateInsert(idx, parseInt(val));
+  const val = parseInt(document.getElementById("insertValue").value);
+  for(let i = items.length; i >= 0; i--){
+    if (items[i] > val){
+      insertSort();
+      items.push(val);
+      animating = true;
+      console.log(val);
+      animateInsert(val);
+      return;
+    }
+ 
 }
-
+  items.push(val);
+  animating = true;
+  console.log(val);
+  animateInsert(val);
+}
 
 
 function deleteValue() {

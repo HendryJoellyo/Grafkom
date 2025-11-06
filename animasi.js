@@ -30,7 +30,7 @@ function animateArrayCreation() {
         drawBox(items[i], i, target.x, target.y); // menggambar box di posisi akhirnya (target)
         i++; // pindah ke index selanjutnya
         x += boxWidth + 2; // gap kotak
-        setTimeout(drawNextBox, 200); // ini untuk mendelay animasi selama 200ms
+        setTimeout(drawNextBox, 25); // ini untuk mendelay animasi selama 25ms
       }
     }
 
@@ -57,7 +57,7 @@ function animateInsert(index, value) {
     }
   }
 
-  function animateDrop() {
+  function animateDropInsert() {
     drawAllExceptMoving();
 
     if (pos.y < target.y) {
@@ -70,7 +70,7 @@ function animateInsert(index, value) {
     }
   }
 
-  animateDrop();
+  animateDropInsert();
 }
 
 function animateDelete(index) {
@@ -171,12 +171,12 @@ function animateSearch(value) {
 
       setTimeout(() => {
         alert("Nilai " + value + " ditemukan pada index ke-" + i);
-        drawArray(); // 🔵 Kembalikan semua box jadi biru setelah alert ditutup
+        drawArray(); // Kembalikan semua box jadi biru setelah alert ditutup
       }, 100);
 
       return;
     }
-    
+
     // jika belum maka lanjutkan
     i++;
 
@@ -187,7 +187,7 @@ function animateSearch(value) {
 
       setTimeout(() => {
         alert("Nilai " + value + " tidak ditemukan dalam array.");
-        drawArray(); // 🔵 Kembalikan warna biru semua box setelah alert
+        drawArray(); // Kembalikan warna biru semua box setelah alert
       }, 100);
     }
   }

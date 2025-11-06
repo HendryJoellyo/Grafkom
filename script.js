@@ -151,17 +151,19 @@ function minValue() {
 }
   
 function maxValue() {
+  let index = items.length -1;
+  let pos = { x: 13 + index * (50 + 2), y: 50 };
+
   if (items.length === 0) {
     alert("Array kosong");
     return;
   }
   else{
-    max = items[0];
-    for (let i = 1; i < items.length; i++) {
-      if (items[i] > max) {
-        max= items[i];
-      }
-    }
-    alert("Nilai minimum adalah: " + max);
+    let x = Math.max(...items);
+    drawBox2(x, index, pos.x, pos.y);
+
+    setTimeout(() => {
+      drawBox(x, index, pos.x, pos.y);
+    }, 2000);
   }
 }

@@ -54,6 +54,17 @@ function drawBox2(value, index, x, y, alpha = 1) { // fungsi untuk menggambar ko
   ctx.globalAlpha = 1;
 }
 
+function drawArray() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+  const boxWidth = 50;
+  const boxHeight = 30;
+  let x = 13; // titik horizontal
+
+  items.forEach((value, index) => { // untuk setiap value dan index digambar kotak biru
+    drawBox(value, index, x, 50);
+    x += boxWidth + 2; // gap kedua kotak
+  });
+}
 
 function animateArrayCreation() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -116,7 +127,6 @@ function createArray() {
   return items;
 }
 
-
 function animateInsert(index, value) {
   const boxWidth = 50;
   const boxHeight = 30;
@@ -160,7 +170,6 @@ function insertValue() {
     alert("Index melebihi panjang array");
     return;
   }
-
   // sisipkan nilai ke array
   items.splice(idx, 0, parseInt(val));
 
@@ -168,15 +177,94 @@ function insertValue() {
   animateInsert(idx, parseInt(val));
 }
 
+function animateDelete(index) {
+  const boxWidth = 50;
+  const startX = 13;
+  const targetY = 50;
+  let alpha = 1; // opacity box yang akan didelete
+
+  function fadeOut() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < items.length; i++) { // fungsi ini menggambar ulang array selain yang mau didelete
+      if (i === index) {
+        drawBox2(items[i], i, startX + i * (boxWidth + 2), targetY, alpha);
+      } else {
+        drawBox(items[i], i, startX + i * (boxWidth + 2), targetY);
+      }
+    }
+
+    alpha -= 0.05; // mengurangi opacitynya
+
+    if (alpha > 0) {
+      requestAnimationFrame(fadeOut);
+    } else {
+      items.splice(index, 1); // jika animasi fade out sudah selesai, hapus boxnya dan shift box sisanya ke kiri
+      animateShiftLeft(index);
+    }
+  }
+
+  function animateShiftLeft(startIndex) {
+    const gap = 2; // gap antar box
+    const step = { x: -5, y: 0 }; // pergerakan box per frame, yaitu ke kiri sebanyak 5 pixel/frame
+    const targetY = 50; 
+    const boxWidth = 50; 
+    const startX = 13;
+
+    const shifting = []; // variabel ini menyimpan object dari setiap box yang ingin dishift ke kiri
+
+    for (let i = startIndex; i < items.length; i++) {
+      const from = { x: startX + (i + 1) * (boxWidth + gap), y: targetY }; // posisi awal
+      const to = { x: startX + i * (boxWidth + gap), y: targetY }; // posisi target
+      shifting.push({ value: items[i], pos: from, target: to }); // menggunakan translasi (pos) yang diupdate per frame
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < startIndex; i++) { // menggambar box statik dengan index < startIndex sudah ada di posisi akhir
+        drawBox(items[i], i, startX + i * (boxWidth + gap), targetY);
+      }
+
+      let allReached = true; // variabel boolean untuk menyatakan box sudah selesai bergerak
+
+      for (let i = 0; i < shifting.length; i++) { // animasi shifting
+        const box = shifting[i];
+
+        // menggunakan translasi sebagai pergerakan box
+        if (box.pos.x > box.target.x) { // ketika box belum mencapai target
+          box.pos = translasi(box.pos, step); // pos.x += step.x hingga mencapai target
+          allReached = false; // menggerakan box
+        }
+
+        drawBox(box.value, startIndex + i, box.pos.x, box.pos.y); // menggambar box pada titik pos.x
+      }
+      if (!allReached) { // memastikan box mencapai tujuan terakhir dengan cara menggerakan sedikit
+        requestAnimationFrame(animate);
+      } else { // jika sudah tercapai, maka panggil drawArray() untuk menggambar array di titik yang sudah final
+        drawArray();
+        animating = false;
+      }
+    }
+
+    animate();
+  }
+
+  fadeOut();
+}
+
 function deleteValue() {
-   value = document.getElementById("deleteIndex").value;
-  if(value >= items.length){
+  if (animating) return;
+
+  const index = parseInt(document.getElementById("deleteIndex").value);
+
+  if (index < 0 || index >= items.length) {
     alert("Index melebihi panjang array");
     return;
   }
-    let index = document.getElementById("deleteIndex").value;
-    items.splice(index, 1);
-    drawArray();
+
+  animating = true;
+  animateDelete(index);
 }
 
 function searchValue() {

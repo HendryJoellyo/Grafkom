@@ -59,7 +59,7 @@ function animateSort() {
   }
 
   function bubbleSortStep() {
-    if (i < items.length - 1) {
+    if (i < items.length - 1) { 
       if (j < items.length - i - 1) {
         drawAll(j, j + 1); // highlight dua elemen yang dibandingkan
 
@@ -107,7 +107,7 @@ function animateInsert(value, index) {
 
     if (pos.y <= target.y) {
       pos = translasi(pos, step);
-      drawBox(value, index, pos.x, pos.y);
+      drawBox2(value, index, pos.x, pos.y);
       requestAnimationFrame(animateDrop);
     } else {
       drawBox(value, index, target.x, target.y);

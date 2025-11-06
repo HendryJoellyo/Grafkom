@@ -1,43 +1,104 @@
 const canvas = document.getElementById("arrayCanvas");
 const ctx = canvas.getContext("2d");
 
-items = [];
-value = {};
+let animating = false; // ini buat mencegah animasi lain berjalan ketika animasi sedang berjalan
+
+function translasi(titik_lama, T) {
+  return { x: titik_lama.x + T.x, y: titik_lama.y + T.y }; // fungsi pergeseran
+}
+
+function drawBox(value, index, x, y, alpha = 1) { // fungsi untuk menggambar kotak yang isinya ada value dan index dibawahnya
+  const boxWidth = 50;
+  const boxHeight = 30;
+
+  ctx.globalAlpha = alpha;
+
+  // kotak
+  ctx.fillStyle = "blue";
+  ctx.fillRect(x, y, boxWidth, boxHeight);
+
+  // nilai
+  ctx.fillStyle = "white";
+  ctx.font = "17px Arial";
+  ctx.fillText(value, x + 12, y + 20);
+
+  // index
+  ctx.fillStyle = "black";
+  ctx.font = "12px Arial";
+  ctx.fillText(index, x + 20, y + 45);
+
+  ctx.globalAlpha = 1;
+}
 
 function drawArray() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
+  const boxWidth = 50;
+  const boxHeight = 30;
+  let x = 13; // titik horizontal
 
+  items.forEach((value, index) => { // untuk setiap value dan index digambar kotak biru
+    drawBox(value, index, x, 50);
+    x += boxWidth + 2; // gap kedua kotak
+  });
+}
+
+function animateArrayCreation() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   const boxWidth = 50;
   const boxHeight = 30;
   let x = 13;
 
-  items.forEach((value, index) => {
+  let i = 0; // index awal yang mau dianimasikan
 
-      // kotak
-      ctx.fillStyle = "blue";
-      ctx.fillRect(x, 50, boxWidth, boxHeight);
-      ctx.fillStyle = "white";
-
-      // nilai
-      ctx.font = "17px Arial";
-      ctx.fillText(value, x + 12, 70);
-
-      // index
-      ctx.fillStyle = "black";
-      ctx.font = "12px Arial";
-      ctx.fillText(index, x + 20, 100);
-
-      x += boxWidth + 2;
+  function drawNextBox() {
+    if (i >= items.length) { //fungsi ketika i nya sudah melebihi inputan, maka animasinya akan distop
+      animating = false;
+      return;
     }
-  );
-} 
+
+    let pos = { x: x, y: -40 }; // ini posisi awal kotak (di atas canvas) agar seolah-olah kotanya akan jatuh
+    const target = { x: x, y: 50 }; // ini adalah posisi target / posisi akhir kotak yang ingin dicapai
+    const step = { x: 0, y: 5 }; // ini adalah pergerakan kotak, yaitu 5 pixel per frame
+
+    function animateDrop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let j = 0; j < i; j++) { // ini untuk menggambar ulang box yang sudah ada tapi langsung di posisi akhirnya agar tetap ada ketika box lain jatuh
+        drawBox(items[j], j, 13 + j * (boxWidth + 2), 50);
+      }
+
+      if (pos.y < target.y) { // memeriksa apakah box tersebut sudah mencapai y = 50 atau beblum
+        pos = translasi(pos, step); // pergerakkan kebawah sebanyak y = 5 per frame, pos adalah posisi awal yaitu x = 13 dan y = -40
+        drawBox(items[i], i, pos.x, pos.y); // ngerender box yang bergerak tadi ke posisi barunya
+        requestAnimationFrame(animateDrop); // agar animasi smooth (memanggil animateDrop() lagi di frame selanjutnya)
+      } else { // ketika pos.y >= target.y // ini adalah gerakan di frame terakhir animasi
+        drawBox(items[i], i, target.x, target.y); // menggambar box di posisi akhirnya (target)
+        i++; // pindah ke index selanjutnya
+        x += boxWidth + 2; // gap kotak
+        setTimeout(drawNextBox, 200); // ini untuk mendelay animasi selama 200ms
+      }
+    }
+
+    animateDrop();
+  }
+
+  drawNextBox();
+}
 
 function createArray() {
-  boxvalue = document.getElementById("arrayInput").value;
-  for (let i = 0; i < boxvalue; i++) {
-    items[i] = Math.floor(Math.random()*201) - 100;
+  if (animating) { // ini memeriksa jika ada animasi yang berjalan atau tidak, jika true maka fungsinya langsung berhenti
+    return
+  };
+
+  let n = document.getElementById("arrayInput").value; // ambil value dari inputan
+
+  items = []; // menghapus array yang sebelumnya ada
+
+  for (let i = 0; i < n; i++) { 
+    items[i] = Math.floor(Math.random() * 201) -100; // ini untuk ngerandom value di dalam array
   }
-  drawArray();
+
+  animating = true; // signal untuk memberi tau bahwa animasi sedang berjalan
+  animateArrayCreation();
 }
 
 function insertValue() {

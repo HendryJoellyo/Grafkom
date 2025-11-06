@@ -214,3 +214,48 @@ function animateUpdate(index, newValue) {
     animating = false;
   }, 700); // delay 700ms agar highlight terlihat
 }
+
+function animateSort() {
+  const boxWidth = 50;
+  const startX = 13;
+  const targetY = 50;
+  let i = 0;
+  let j = 0;
+
+  function drawAll(highlightI = -1, highlightJ = -1) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let k = 0; k < items.length; k++) {
+      if (k === highlightI || k === highlightJ) {
+        drawBox2(items[k], k, startX + k * (boxWidth + 2), targetY); // merah untuk dibandingkan
+      } else {
+        drawBox(items[k], k, startX + k * (boxWidth + 2), targetY); // biru biasa
+      }
+    }
+  }
+
+  function bubbleSortStep() {
+    if (i < items.length - 1) {
+      if (j < items.length - i - 1) {
+        drawAll(j, j + 1); // highlight dua elemen yang dibandingkan
+
+        if (items[j] > items[j + 1]) { // jika lebih besar maka :
+          // Tukar elemen
+          [items[j], items[j + 1]] = [items[j + 1], items[j]];
+        }
+
+        j++;
+        setTimeout(bubbleSortStep, 400); // delay tiap langkah
+      } else {
+        j = 0;
+        i++;
+        setTimeout(bubbleSortStep, 400);
+      }
+    } else {
+      // Selesai sorting
+      drawArray();
+      animating = false;
+    }
+  }
+
+  bubbleSortStep();
+}

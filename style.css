@@ -69,4 +69,20 @@ canvas {
     background-color: #9e1d1d;
 }
 
+#sortButton {
+    background-color: #ef28a9;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#sortButton:hover {
+    background-color: #9d1c70;
+}
+
+#colors .docs-demo-template {
+    opacity: 0
+}
+
 #colors .docs-demo-template { opacity: 0 }

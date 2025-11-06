@@ -187,3 +187,14 @@ if (index < 0 || index >= items.length) {
 animating = true;
 animateUpdate(index, newValue);
 }
+
+function sortArray() {
+  if (animating) return; // cegah animasi tumpang tindih
+  if (items.length === 0) {
+    alert("Array kosong!");
+    return;
+  }
+
+  animating = true;
+  animateSort();
+}

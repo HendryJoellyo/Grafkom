@@ -86,43 +86,52 @@ function createArray() {
 }
 
 function insertValue() {
-  if (animating) return; // cegah animasi bertumpuk
+  if (animating) {
+    return
+  };
 
   const val = parseInt(document.getElementById("insertValue").value);
-  for(let i = items.length; i >= 0; i--){
-    if (items[i] > val){
-      insertSort();
-      items.push(val);
-      animating = true;
-      console.log(val);
-      animateInsert(val);
-      return;
-    }
- 
-}
-  items.push(val);
   animating = true;
-  console.log(val);
-  animateInsert(val);
-}
 
+  // Tentukan posisi index baru (misal selalu di akhir)
+  const index = items.length;
+  items.push(val);
+
+  // Jalankan animasi insert
+  animateInsert(val, index);
+
+  // Setelah animasi selesai, baru panggil sort
+  setTimeout(() => {
+    animateSort()
+  }, 1200); // waktu cukup untuk animasi jatuh selesai
+}
 
 function deleteValue() {
-  if (animating) return;
+  if (animating) {
+    return
+  };
 
   const index = parseInt(document.getElementById("deleteIndex").value);
 
-  if (index < 0 || index >= items.length) {
-    alert("Index melebihi panjang array");
+  if (index < 0 ) {
+    alert("Index tidak boleh negatif");
     return;
   }
 
+  else if (index >= items.length) {
+    alert("Index melebihi panjang array")
+    return;
+  }
+  
+  
   animating = true;
   animateDelete(index);
 }
 
 function searchValue() {
-  if (animating) return;
+  if (animating) {
+    return
+  };
 
   if (items.length === 0) {
     alert("Array kosong");
@@ -143,7 +152,8 @@ function minValue() {
     alert("Array kosong");
     return;
   }
-  else{
+
+  else {
     let x = Math.min(...items);
     drawBox2(x, index, pos.x, pos.y);
 
@@ -161,7 +171,8 @@ function maxValue() {
     alert("Array kosong");
     return;
   }
-  else{
+
+  else {
     let x = Math.max(...items);
     drawBox2(x, index, pos.x, pos.y);
 
@@ -172,32 +183,32 @@ function maxValue() {
 }
 
 function updateArray() {
-if (animating) return; // cegah animasi tumpang tindih
+  if (animating) {
+    return
+  }; 
 
-const index = parseInt(document.getElementById("updateIndex").value);
-const newValue = parseInt(document.getElementById("updateValue").value);
+  const index = parseInt(document.getElementById("updateIndex").value);
+  const newValue = parseInt(document.getElementById("updateValue").value);
 
-if (isNaN(index) || isNaN(newValue)) {
-  alert("Masukkan index dan nilai yang valid!");
-  return;
-}
+  if (isNaN(index) || isNaN(newValue)) {
+    alert("Masukkan index dan nilai yang valid!");
+    return;
+  }
 
-if (index < 0 || index >= items.length) {
-  alert("Index melebihi panjang array");
-  return;
-}
+  if (index < 0 ) {
+    alert("Index tidak boleh negatif");
+    return;
+  }
 
-animating = true;
-animateUpdate(index, newValue);
-}
-
-function sortArray() {
-  if (animating) return; // cegah animasi tumpang tindih
-  if (items.length === 0) {
-    alert("Array kosong!");
+  else if(index >= items.length) {
+    alert("Index melebihi panjang array")
     return;
   }
 
   animating = true;
-  animateSort();
+  animateUpdate(index, newValue);
+
+  setTimeout(() => {
+    animateSort()
+  }, 1200);
 }

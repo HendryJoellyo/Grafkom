@@ -11,24 +11,26 @@
     <h1>Visualisasi Array dengan Canvas</h1>
 
     <div class="controls">
-        <input type="number" id="arrayInput" placeholder="Masukkan nilai N" min="0">
+        <input type="number" id="arrayInput" placeholder="Masukkan panjang array" min="0">
         <button onclick="createArray()">Buat Array</button>
 
-        <input type="number" id="insertValue" placeholder="Nilai">
-        <button onclick="insertValue()">Insert</button>
+        <input type="number" id="insertValue" placeholder="Nilai yang akan diinsert">
+        <button onclick="insertValue()">Insert Value</button>
 
-        <input type="number" id="deleteIndex" placeholder="Index hapus" min="0">
-        <button onclick="deleteValue()">Delete</button>
+        <input type="number" id="deleteIndex" placeholder="Index yang akan dihapus" min="0">
+        <button onclick="deleteValue()">Delete Index</button>
 
-        <input type="number" id="SearchIndex" placeholder="Cari Nilai">
-        <button onclick="searchValue()">Search</button>
+        <input type="number" id="SearchIndex" placeholder="Cari nilai dalam array">
+        <button onclick="searchValue()">Search Value</button>
     </div>
 
     <div class="controls2">
+        <input type="number" id="updateValue" placeholder="Nilai baru" />
+        <input type="number" id="updateIndex" placeholder="Index ke berapa" />
+        <button onclick="updateArray()">Update Index</button>
+        
         <button onclick="minValue()" id="minButton">Minimum Value</button>
         <button onclick="maxValue()" id="maxButton">Maximum Value</button>
-        
-        <button onclick="sortArray()" id="sortButton">Sort Array</button>
     </div>
     
     <canvas id="arrayCanvas" width="1400" height="200"></canvas>

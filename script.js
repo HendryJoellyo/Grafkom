@@ -30,6 +30,29 @@ function drawBox(value, index, x, y, alpha = 1) { // fungsi untuk menggambar kot
   ctx.globalAlpha = 1;
 }
 
+function drawBox2(value, index, x, y, alpha = 1) { // fungsi untuk menggambar kotak yang isinya ada value dan index dibawahnya
+  const boxWidth = 50;
+  const boxHeight = 30;
+
+  ctx.globalAlpha = alpha;
+
+  // kotak
+  ctx.fillStyle = "#cc1212ff";
+  ctx.fillRect(x, y, boxWidth, boxHeight);
+
+  // nilai
+  ctx.fillStyle = "white";
+  ctx.font = "17px Arial";
+  ctx.fillText(value, x + 12, y + 20);
+
+  // index
+  ctx.fillStyle = "black";
+  ctx.font = "12px Arial";
+  ctx.fillText(index, x + 20, y + 45);
+
+  ctx.globalAlpha = 1;
+}
+
 function drawArray() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // clear canvas
   const boxWidth = 50;
@@ -58,7 +81,7 @@ function animateArrayCreation() {
 
     let pos = { x: x, y: -40 }; // ini posisi awal kotak (di atas canvas) agar seolah-olah kotanya akan jatuh
     const target = { x: x, y: 50 }; // ini adalah posisi target / posisi akhir kotak yang ingin dicapai
-    const step = { x: 0, y: 5 }; // ini adalah pergerakan kotak, yaitu 5 pixel per frame
+    const step = { x: 0, y: 1 }; // ini adalah pergerakan kotak, yaitu 5 pixel per frame
 
     function animateDrop() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -68,7 +91,7 @@ function animateArrayCreation() {
 
       if (pos.y < target.y) { // memeriksa apakah box tersebut sudah mencapai y = 50 atau beblum
         pos = translasi(pos, step); // pergerakkan kebawah sebanyak y = 5 per frame, pos adalah posisi awal yaitu x = 13 dan y = -40
-        drawBox(items[i], i, pos.x, pos.y); // ngerender box yang bergerak tadi ke posisi barunya
+        drawBox2(items[i], i, pos.x, pos.y); // ngerender box yang bergerak tadi ke posisi barunya
         requestAnimationFrame(animateDrop); // agar animasi smooth (memanggil animateDrop() lagi di frame selanjutnya)
       } else { // ketika pos.y >= target.y // ini adalah gerakan di frame terakhir animasi
         drawBox(items[i], i, target.x, target.y); // menggambar box di posisi akhirnya (target)
@@ -101,18 +124,56 @@ function createArray() {
   animateArrayCreation();
 }
 
+
+function animateInsert(index, value) {
+  const boxWidth = 50;
+  const boxHeight = 30;
+  const startX = 13;
+  const targetY = 50;
+  let pos = { x: startX + index * (boxWidth + 2), y: -40 }; // mulai dari atas
+  const target = { x: pos.x, y: targetY };
+  const step = { x: 0, y: 1 };
+
+  function drawAllExceptMoving() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < items.length; i++) {
+      if (i === index) continue; // skip kotak yang sedang dianimasikan
+      drawBox(items[i], i, startX + i * (boxWidth + 2), targetY);
+    }
+  }
+
+  function animateDrop() {
+    drawAllExceptMoving();
+
+    if (pos.y < target.y) {
+      pos = translasi(pos, step);
+      drawBox2(value, index, pos.x, pos.y);
+      requestAnimationFrame(animateDrop);
+    } else {
+      drawBox(value, index, target.x, target.y);
+      animating = false; // animasi selesai
+    }
+  }
+
+  animateDrop();
+}
+
 function insertValue() {
-  value = document.getElementById("insertIndex").value;
-  if(value > items.length){
+  if (animating) return; // cegah animasi bertumpuk
+
+  const val = document.getElementById("insertValue").value;
+  const idx = parseInt(document.getElementById("insertIndex").value);
+
+  if (idx > items.length) {
     alert("Index melebihi panjang array");
     return;
   }
-  else {
-      let value = document.getElementById("insertValue").value;
-      let index = document.getElementById("insertIndex").value;
-      items.splice(index, 0, value);
-      drawArray();
-  }
+
+  // sisipkan nilai ke array
+  items.splice(idx, 0, parseInt(val));
+
+  animating = true;
+  animateInsert(idx, parseInt(val));
 }
 
 function deleteValue() {

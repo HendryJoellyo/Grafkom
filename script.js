@@ -167,3 +167,23 @@ function maxValue() {
     }, 2000);
   }
 }
+
+function updateArray() {
+if (animating) return; // cegah animasi tumpang tindih
+
+const index = parseInt(document.getElementById("updateIndex").value);
+const newValue = parseInt(document.getElementById("updateValue").value);
+
+if (isNaN(index) || isNaN(newValue)) {
+  alert("Masukkan index dan nilai yang valid!");
+  return;
+}
+
+if (index < 0 || index >= items.length) {
+  alert("Index melebihi panjang array");
+  return;
+}
+
+animating = true;
+animateUpdate(index, newValue);
+}

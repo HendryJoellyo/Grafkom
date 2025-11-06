@@ -194,3 +194,23 @@ function animateSearch(value) {
 
   highlightNext();
 }
+
+function animateUpdate(index, newValue) {
+  const boxWidth = 50;
+  const startX = 13;
+  const targetY = 50;
+  const posX = startX + index * (boxWidth + 2);
+
+  // Highlight kotak lama dengan merah
+  drawBox2(items[index], index, posX, targetY);
+
+  setTimeout(() => {
+    // Update nilainya di array
+    items[index] = newValue;
+
+    // Gambar ulang kotak jadi biru dengan nilai baru
+    drawBox(items[index], index, posX, targetY);
+
+    animating = false;
+  }, 700); // delay 700ms agar highlight terlihat
+}

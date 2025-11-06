@@ -78,10 +78,14 @@ function createArray() {
   for (let i = 0; i < n; i++) { 
     items[i] = Math.floor(Math.random() * 201) -100; // ini untuk ngerandom value di dalam array
   }
-  items.sort((a, b) => a - b);
 
   animating = true; // signal untuk memberi tau bahwa animasi sedang berjalan
   animateArrayCreation();
+
+  setTimeout(() => {
+    animateSort()
+  }, 500);
+
   return items;
 }
 

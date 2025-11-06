@@ -14,7 +14,7 @@ function animateArrayCreation() {
 
     let pos = { x: x, y: -40 }; // ini posisi awal kotak (di atas canvas) agar seolah-olah kotanya akan jatuh
     const target = { x: x, y: 50 }; // ini adalah posisi target / posisi akhir kotak yang ingin dicapai
-    const step = { x: 0, y: 1 }; // ini adalah pergerakan kotak, yaitu 5 pixel per frame
+    const step = { x: 0, y: 2 }; // ini adalah pergerakan kotak, yaitu 2 pixel per frame
 
     function animateDrop() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -69,11 +69,11 @@ function animateSort() {
         }
 
         j++;
-        setTimeout(bubbleSortStep, 400); // delay tiap langkah
+        setTimeout(bubbleSortStep, 1000); // delay tiap langkah
       } else {
         j = 0;
         i++;
-        setTimeout(bubbleSortStep, 400);
+        setTimeout(bubbleSortStep, 1000);
       }
     } else {
       // Selesai sorting

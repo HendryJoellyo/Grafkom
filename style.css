@@ -10,7 +10,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-.controls {
+.controls, .controls2{
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -84,5 +84,3 @@ canvas {
 #colors .docs-demo-template {
     opacity: 0
 }
-
-#colors .docs-demo-template { opacity: 0 }

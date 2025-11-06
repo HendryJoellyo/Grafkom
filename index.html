@@ -22,14 +22,16 @@
 
         <input type="number" id="SearchIndex" placeholder="Cari Nilai">
         <button onclick="searchValue()">Search</button>
+    </div>
 
-        <button onclick="minValue()" id="minButton" >Min</button>
-        <button onclick="maxValue()" id="maxButton">Max</button>
+    <div class="controls2">
+        <button onclick="minValue()" id="minButton">Minimum Value</button>
+        <button onclick="maxValue()" id="maxButton">Maximum Value</button>
+        
+        <button onclick="sortArray()" id="sortButton">Sort Array</button>
     </div>
     
     <canvas id="arrayCanvas" width="1400" height="200"></canvas>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
 
     <script src="script.js"></script>
     <script src="animasi.js"></script>
